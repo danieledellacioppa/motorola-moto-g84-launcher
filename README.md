@@ -1,4 +1,5 @@
 # Motorola Moto G84 Launcher
+[![Android CI](https://github.com/danieledellacioppa/motorola-moto-g84-launcher/actions/workflows/android.yml/badge.svg)](https://github.com/danieledellacioppa/motorola-moto-g84-launcher/actions/workflows/android.yml)
 
 This project is a custom launcher for Motorola devices running Android 13. It's built using Jetpack Compose and showcases installed applications, allowing users to launch them directly from the launcher interface.
 
