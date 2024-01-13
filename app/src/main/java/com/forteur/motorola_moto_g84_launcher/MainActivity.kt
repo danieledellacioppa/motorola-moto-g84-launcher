@@ -5,27 +5,29 @@ import android.content.Intent
 import android.content.pm.ApplicationInfo
 import android.content.pm.PackageManager
 import android.os.Bundle
-import android.widget.Toast
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.clickable
-import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.PaddingValues
+import androidx.compose.foundation.layout.aspectRatio
 import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.lazy.grid.GridCells
 import androidx.compose.foundation.lazy.grid.LazyVerticalGrid
-import androidx.compose.foundation.lazy.items
+import androidx.compose.foundation.lazy.grid.items
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.asImageBitmap
-import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.unit.sp
 import androidx.core.graphics.drawable.toBitmap
 import com.forteur.motorola_moto_g84_launcher.ui.theme.Motorolamotog84launcherTheme
 
@@ -39,9 +41,11 @@ class MainActivity : ComponentActivity() {
                     modifier = Modifier.fillMaxSize(),
                     color = MaterialTheme.colorScheme.background
                 ) {
-                    AppList(getInstalledApps(packageManager), packageManager) { appInfo ->
-                        onAppClick(appInfo, this)
-                    }
+                        AppList2(
+                            apps = getInstalledApps(packageManager),
+                            packageManager = packageManager,
+                            onAppClick = { onAppClick(it, this) }
+                        )
                 }
             }
         }
@@ -62,39 +66,44 @@ fun onAppClick(appInfo: ApplicationInfo, context: Context) {
 
 
 @Composable
-fun AppList(apps: List<ApplicationInfo>, packageManager: PackageManager, onAppClick: (ApplicationInfo) -> Unit) {
-    LazyColumn {
+fun AppList2(apps: List<ApplicationInfo>, packageManager: PackageManager, onAppClick: (ApplicationInfo) -> Unit) {
+    LazyVerticalGrid(
+        columns = GridCells.Fixed(5),
+        contentPadding = PaddingValues(4.dp) // Aggiungi un piccolo padding intorno alla griglia
+    ) {
         items(apps) { app ->
             AppItem(appInfo = app, packageManager = packageManager, onClick = { onAppClick(app) })
         }
     }
 }
 
+// Modifica del composable AppItem2
 @Composable
 fun AppItem(appInfo: ApplicationInfo, packageManager: PackageManager, onClick: () -> Unit) {
-    Row(modifier = Modifier
-        .fillMaxWidth()
-        .clickable(onClick = onClick)
-        .padding(16.dp)) {
-        Image(bitmap = appInfo.loadIcon(packageManager).toBitmap().asImageBitmap(),
-            contentDescription = null)
-        Text(text = appInfo.loadLabel(packageManager).toString(), modifier = Modifier.padding(start = 8.dp))
+    Column(
+        modifier = Modifier
+            .padding(4.dp) // Riduci il padding se necessario
+            .aspectRatio(1f) // Mantieni un rapporto di aspetto quadrato
+            .clickable(onClick = onClick),
+        horizontalAlignment = Alignment.CenterHorizontally, // Allinea al centro orizzontalmente
+        verticalArrangement = Arrangement.Top // Allinea in alto verticalmente
+    ) {
+        Image(
+            bitmap = appInfo.loadIcon(packageManager).toBitmap().asImageBitmap(),
+            contentDescription = null,
+            modifier = Modifier
+                .size(48.dp) // Imposta una dimensione fissa per le icone
+                .align(Alignment.CenterHorizontally) // Allinea l'immagine al centro orizzontalmente
+        )
+        Text(
+            text = appInfo.loadLabel(packageManager).toString(),
+            fontSize = 12.sp, // Riduci la dimensione del testo se necessario
+            modifier = Modifier
+                .align(Alignment.CenterHorizontally) // Allinea il testo al centro orizzontalmente
+                .padding(top = 4.dp) // Aggiungi padding sopra il testo
+        )
     }
 }
 
 
-@Composable
-fun Greeting(name: String, modifier: Modifier = Modifier) {
-    Text(
-        text = "Hello $name!",
-        modifier = modifier
-    )
-}
 
-@Preview(showBackground = true)
-@Composable
-fun GreetingPreview() {
-    Motorolamotog84launcherTheme {
-        Greeting("Android")
-    }
-}
