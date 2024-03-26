@@ -1,3 +1,4 @@
+
 plugins {
     id("com.android.application")
     id("org.jetbrains.kotlin.android")
@@ -9,7 +10,7 @@ android {
 
     defaultConfig {
         applicationId = "com.forteur.motorola_moto_g84_launcher"
-        minSdk = 33
+        minSdk = 34
         targetSdk = 34
         versionCode = 1
         versionName = "1.0"
@@ -20,13 +21,23 @@ android {
         }
     }
 
+    signingConfigs {
+        create("release") {
+            keyAlias = "my-key-alias"
+            keyPassword = "hanuman"
+            storeFile = file("my-release-key.keystore")
+            storePassword = "hanuman"
+        }
+    }
+
     buildTypes {
-        release {
+        getByName("release") {
             isMinifyEnabled = false
             proguardFiles(
                 getDefaultProguardFile("proguard-android-optimize.txt"),
                 "proguard-rules.pro"
             )
+            signingConfig = signingConfigs.getByName("release")
         }
     }
     compileOptions {

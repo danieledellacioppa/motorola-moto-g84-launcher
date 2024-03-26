@@ -68,8 +68,8 @@ fun onAppClick(appInfo: ApplicationInfo, context: Context) {
 @Composable
 fun AppList2(apps: List<ApplicationInfo>, packageManager: PackageManager, onAppClick: (ApplicationInfo) -> Unit) {
     LazyVerticalGrid(
-        columns = GridCells.Fixed(5),
-        contentPadding = PaddingValues(4.dp) // Aggiungi un piccolo padding intorno alla griglia
+        columns = GridCells.Fixed(4), // Riduci il numero di colonne
+        contentPadding = PaddingValues(4.dp) // Mantiene il padding intorno alla griglia
     ) {
         items(apps) { app ->
             AppItem(appInfo = app, packageManager = packageManager, onClick = { onAppClick(app) })
@@ -77,13 +77,14 @@ fun AppList2(apps: List<ApplicationInfo>, packageManager: PackageManager, onAppC
     }
 }
 
+
 // Modifica del composable AppItem2
 @Composable
 fun AppItem(appInfo: ApplicationInfo, packageManager: PackageManager, onClick: () -> Unit) {
     Column(
         modifier = Modifier
-            .padding(4.dp) // Riduci il padding se necessario
-            .aspectRatio(1f) // Mantieni un rapporto di aspetto quadrato
+            .padding(8.dp) // Aumenta il padding per ridurre il numero di icone visibili
+            .aspectRatio(1f)
             .clickable(onClick = onClick),
         horizontalAlignment = Alignment.CenterHorizontally, // Allinea al centro orizzontalmente
         verticalArrangement = Arrangement.Top // Allinea in alto verticalmente
